@@ -1,7 +1,12 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Template to make VPC with private and public subnet",
-  "Parameters": {},
+  "Parameters": {
+    "VPCName" : {
+        "Description" : "Name of the VPC",
+        "Type" : "String"
+      }
+  },
 
   "Resources": {
     "VPC": {
@@ -16,7 +21,12 @@
         }, {
           "Key": "Network",
           "Value": "Public"
-        }]
+        },
+        {
+          "Key": "Name",
+          "Value": { "Ref": "VPCName" }        
+        }
+        ]
       }
     },
 

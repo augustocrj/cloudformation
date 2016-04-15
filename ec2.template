@@ -173,11 +173,11 @@
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
         "InstanceType" : { "Ref" : "InstanceType" },
-        "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
+        "SecurityGroupIds" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName" : { "Ref" : "KeyName" },
-        "SubnetId" : { "Ref" : "mySubnetIDs" },
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
-                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] }
+                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+        "SubnetId" : { "Ref" : "mySubnetIDs" }
       }
     },
 
@@ -185,8 +185,8 @@
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable SSH access via port 22",
+        "VpcId" : {"Ref" : "VPCName"},
         "SecurityGroupIngress" : [ {
-          "VpcId" : {"Ref" : "VPCName"},
           "IpProtocol" : "tcp",
           "FromPort" : "22",
           "ToPort" : "22",
@@ -205,13 +205,9 @@
       "Description" : "Availability Zone of the newly created EC2 instance",
       "Value" : { "Fn::GetAtt" : [ "EC2Instance", "AvailabilityZone" ] }
     },
-    "PublicDNS" : {
-      "Description" : "Public DNSName of the newly created EC2 instance",
-      "Value" : { "Fn::GetAtt" : [ "EC2Instance", "PublicDnsName" ] }
-    },
-    "PublicIP" : {
+    "PrivateIp" : {
       "Description" : "Public IP address of the newly created EC2 instance",
-      "Value" : { "Fn::GetAtt" : [ "EC2Instance", "PublicIp" ] }
+      "Value" : { "Fn::GetAtt" : [ "EC2Instance", "PrivateIp" ] }
     }
   }
 }
